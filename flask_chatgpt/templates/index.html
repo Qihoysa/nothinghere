@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+    <!-- 添加 Prism.js 相关 CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/themes/prism.min.css"/>
+    <!-- 引入 highlight.js 的 CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/github.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/waifu.css"/>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- 添加 Prism.js 相关 JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-csharp.min.js"></script>
+    <!-- 添加更多支持的语言... -->
+
+
+    <!-- 引入 highlight.js 的 JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <title>My Custom Search Interface</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: #232323; /* 更改背景颜色为深色调 */
+}
+
+
+
+.container {
+    text-align: center;
+    width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 32px;
+    text-align: center;
+    font-family: 'Pacifico', cursive; /* 使用 Google Fonts 的 Pacifico 字体 */
+    margin-bottom: 20px;
+}
+
+.logo {
+    background-color: #232323;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 20px; /* 使 logo 与搜索框之间有一定的间距 */
+}
+
+.logo-text {
+    color: #9b9b9b;
+    font-size: 24px;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+.image-logo-container {
+    display: inline-block;
+    text-align: center;
+}
+
+#rounded-image {
+    width: 100%; /* 图片宽度，可以根据需要调整 */
+    max-width: 300px; /* 图片最大宽度，可以根据需要调整 */
+    border-radius: 10px; /* 设置圆角 */
+    margin-bottom: 20px; /* 使图片与搜索框之间有一定的间距 */
+    display: block; /* 设置图片为块级元素 */
+    margin-left: auto; /* 使图片左侧自动填充空白 */
+    margin-right: auto; /* 使图片右侧自动填充空白 */
+}
+
+
+
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+input[type="text"] {
+    width: calc(100% - 46px); /* 减去搜索按钮的宽度和边框 */
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 10px 0 0 10px;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.5); /* 设置搜索框为半透明 */
+}
+
+button {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.5); /* 设置按钮为半透明 */
+    border: none;
+    cursor: pointer;
+    border-radius: 0 10px 10px 0;
+}
+
+button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+
+button[type="submit"]:before {
+    content: "\1F50D";
+    font-size: 16px;
+}
+
+
+
+#response-textarea {
+  width: 100%;
+  min-height: 200px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #ccc;
+  border-radius: 12px; /* 更新圆角 */
+  padding: 12px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  resize: none;
+  overflow-y: auto;
+  margin-top: 30px; /* 增加上边距使 div 与搜索框保持距离 */
+}
+
+
+
+#contact-info {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+#contact-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#contact-info li {
+    padding: 5px;
+    background-color: #232323;
+     color: #ffffff; /* 将文本颜色设置为白色，以确保在深色背景上可读 */
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s;
+    animation: blink 3s infinite;
+}
+
+#contact-info li:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+
+.progress-bar {
+    display: none;
+    position: relative;
+    height: 10px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.progress-bar-inner {
+    position: absolute;
+    height: 100%;
+    width: 20%;
+    border-radius: 5px;
+    background-color: #448aff;
+    animation: loading 2s infinite;
+}
+
+
+
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+#running-animation {
+    position: fixed;
+    bottom: 20px; /* 设置动画离底部的距离 */
+    right: 20px; /* 设置动画离右边的距离 */
+    width: 100px; /* 设置动画的宽度，可以根据需要调整 */
+    z-index: 999; /* 确保动画显示在其他内容的顶部 */
+}
+
+
+
+@keyframes loading {
+    0% {
+        left: 0;
+        right: 100%;
+    }
+    50% {
+        left: 50%;
+        right: 50%;
+    }
+    100% {
+        left: 100%;
+        right: 0;
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+
+<img id="running-animation" src="https://i.gifer.com/embedded/download/RO4I.gif" alt="Running animation">
+<body>
+<div id="particles-js"></div>
+<div class="container">
+    <h1 class="title">智能商场语音导购</h1>
+    <form onsubmit="submitForm(event)">
+        <input type="text" id="message" placeholder="输入或点击麦克风说出你的问题" value="{{question}}" required>
+        <button type="submit"></button>
+        <button type="button" id="microphone" onclick="startDictation(event)"></button>
+    </form>
+    <div class="progress-bar" id="progress-bar">
+        <div class="progress-bar-inner"></div>
+    </div>
+   <div id="response-container">
+    <div id="response-textarea" contenteditable="true">
+    </div>
+</div>
+     <div class="waifu">
+        <div class="waifu-tips"></div>
+        <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+    </div>
+</div>
+
+
+<script>
+    function startDictation(e) {
+        e.preventDefault();
+        fetch('./microphone',{
+            method:'POST'
+        }).then(response => response.json())
+            .then(data => {
+                let responseTextarea = document.getElementById('response-textarea');
+                let responseTextQ = document.getElementById('message');
+                responseText = data['response'];
+                console.log(data);
+                let outputtext = responseText[1];
+                responseTextarea.innerHTML = responseText[1];
+                responseTextQ.value = responseText[0];
+                showMessage(outputtext, 5000, 1);
+            })
+            .then(() => {let textform = new FormData();
+        textform.append('message', responseText[1]);
+        fetch('./speaking', {
+            method: 'POST',
+            body: textform
+            })
+            .then(()=>{console.log(textform)})
+        })
+    }
+
+function submitForm(event) {
+  event.preventDefault();
+
+  let message = document.getElementById('message').value;
+  let formData = new FormData();
+  formData.append('message', message);
+
+  // 显示进度条
+  document.getElementById('progress-bar').style.display = 'block';
+
+  fetch('/chat', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    let responseTextarea = document.getElementById('response-textarea');
+    let responseText = data.response;
+
+    // 渲染文本和代码块
+    const resultHtml = splitText.map((text, index) => {
+      if (codeBlocks && codeBlocks.includes(text)) {
+        const codeBlock = text.replace(/```/g, '').trim();
+        return `<pre><code>${codeBlock}</code></pre>`;
+      }
+      return text;
+    }).join('');
+
+    // 更新文本区域的内容
+    responseTextarea.innerHTML = resultHtml;
+
+    // 隐藏进度条
+    document.getElementById('progress-bar').style.display = 'none';
+  })
+  .catch(error => {
+    console.error('Error:', error);
+
+  });
+}
+function sleep(delay) {
+    return new Promise(reslove => {
+        setTimeout(reslove, delay);
+    })
+}
+
+
+    </script>
+
+
+<script>
+    particlesJS('particles-js', {
+        particles: {
+            number: {
+                value: 80,
+                density: {
+                    enable: true,
+                    value_area: 800
+                }
+            },
+            color: {
+                value: '#9b9b9b'
+            },
+            shape: {
+                type: 'circle',
+                stroke: {
+                    width: 0,
+                    color: '#000000'
+                },
+                polygon: {
+                    nb_sides: 5
+                },
+                image: {
+                    src: 'img/github.svg',
+                    width: 100,
+                    height: 100
+                }
+            },
+            opacity: {
+                value: 0.5,
+                random: false,
+                anim: {
+                    enable: false,
+                    speed: 1,
+                    opacity_min: 0.1,
+                    sync: false
+                }
+            },
+            size: {
+                value: 3,
+                random: true,
+                anim: {
+                    enable: false,
+                    speed: 40,
+                    size_min: 0.1,
+                    sync: false
+                }
+            },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: '#ffffff',
+                opacity: 0.4,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 6,
+                direction: 'none',
+                random: false,
+                straight: false,
+                out_mode: 'out',
+                bounce: false,
+                attract: {
+                    enable: false,
+                    rotateX: 600,
+                    rotateY: 1200
+                }
+            }
+        },
+        interactivity: {
+            detect_on: 'canvas',
+            events: {
+                onhover: {
+                    enable: true,
+                    mode: 'repulse'
+                },
+                onclick: {
+                    enable: true,
+                    mode: 'push'
+                },
+                resize: true
+            },
+            modes: {
+                grab: {
+                    distance: 400,
+                    line_linked: {
+                        opacity: 1
+                    }
+                },
+                bubble: {
+                    distance: 400,
+                    size: 40,
+                    duration: 2,
+                    opacity: 8,
+                    speed: 3
+                },
+                repulse: {
+                    distance: 200,
+                    duration: 0.4
+                },
+                push: {
+                    particles_nb: 4
+                },
+                remove: {
+                    particles_nb: 2
+                }
+            }
+        },
+        retina_detect: true
+        });
+
+</script>
+   <script src="../static/waifu-tips.js"></script>
+    <script src="../static/live2d.js"></script>
+    <script type="text/javascript">initModel("../static/")</script>
+
+
+</body>
+</html>
+
+
